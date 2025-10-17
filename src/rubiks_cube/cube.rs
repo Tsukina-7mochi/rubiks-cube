@@ -43,11 +43,17 @@ pub struct Cube {
 }
 
 impl Cube {
-    fn apply_operation(&mut self, operation: &Operation) {
+    pub fn new() -> Self {
+        Self {
+            rotation: Rotation::default(),
+        }
+    }
+
+    pub fn apply_operation(&mut self, operation: &Operation) {
         self.rotation *= operation.rotation();
     }
 
-    fn operation_applied(&self, operation: &Operation) -> Self {
+    pub fn operation_applied(&self, operation: &Operation) -> Self {
         Self {
             rotation: &self.rotation * operation.rotation(),
         }

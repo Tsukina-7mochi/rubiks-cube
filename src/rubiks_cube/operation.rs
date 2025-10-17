@@ -1,7 +1,6 @@
 use std::fmt::Display;
 
-use super::algebra::rotation::{rotations, Rotation};
-
+use super::algebra::rotation::{Rotation, rotations};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Operation {
@@ -47,6 +46,53 @@ impl Operation {
             Operation::B2 => &rotations::B2,
             Operation::B3 => &rotations::B3,
         }
+    }
+
+    pub fn all() -> Vec<Operation> {
+        vec![
+            Operation::R,
+            Operation::R2,
+            Operation::R3,
+            Operation::L,
+            Operation::L2,
+            Operation::L3,
+            Operation::U,
+            Operation::U2,
+            Operation::U3,
+            Operation::D,
+            Operation::D2,
+            Operation::D3,
+            Operation::F,
+            Operation::F2,
+            Operation::F3,
+            Operation::B,
+            Operation::B2,
+            Operation::B3,
+        ]
+    }
+
+    pub fn right() -> Vec<Operation> {
+        vec![Operation::R, Operation::R2, Operation::R3]
+    }
+
+    pub fn left() -> Vec<Operation> {
+        vec![Operation::L, Operation::L2, Operation::L3]
+    }
+
+    pub fn up() -> Vec<Operation> {
+        vec![Operation::U, Operation::U2, Operation::U3]
+    }
+
+    pub fn down() -> Vec<Operation> {
+        vec![Operation::D, Operation::D2, Operation::D3]
+    }
+
+    pub fn front() -> Vec<Operation> {
+        vec![Operation::F, Operation::F2, Operation::F3]
+    }
+
+    pub fn back() -> Vec<Operation> {
+        vec![Operation::B, Operation::B2, Operation::B3]
     }
 }
 
