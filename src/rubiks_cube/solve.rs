@@ -1,7 +1,8 @@
 use std::rc::Rc;
 
 use super::algebra::rotation::Rotation;
-use super::search::{Searchable, iterative_deepening_dfs};
+use super::search;
+use super::search::{Prunable, Searchable};
 use super::{Cube, Operation};
 
 #[derive(Debug, Clone)]
@@ -98,12 +99,28 @@ impl Searchable for Rc<SearchNode> {
     }
 }
 
+impl Prunable for Rc<SearchNode> {
+    fn to_prune(&self, depth: usize, max_depth: usize) -> bool {
+        let remaining_depth = max_depth - depth;
+        if remaining_depth == 1 {
+            self.rotation.edge_hamming_distance(&Rotation::default()) > 4
+                || self.rotation.corner_hamming_distance(&Rotation::default()) > 4
+        } else if remaining_depth == 2 {
+            self.rotation.edge_hamming_distance(&Rotation::default()) > 8
+        } else if remaining_depth == 3 {
+            self.rotation.edge_hamming_distance(&Rotation::default()) > 10
+        } else {
+            false
+        }
+    }
+}
+
 pub fn solve(cube: Cube, max_depth: usize) -> Option<Vec<Operation>> {
     let node = Rc::new(SearchNode {
         rotation: cube.rotation.clone(),
         parent: None,
     });
-    let result_node = iterative_deepening_dfs(node, max_depth)?;
+    let result_node = search::iterative_deepening_dfs(node, max_depth)?;
 
     let mut result = vec![];
     let mut current = &result_node;

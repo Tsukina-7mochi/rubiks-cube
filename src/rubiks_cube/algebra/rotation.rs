@@ -25,6 +25,20 @@ impl Rotation {
             corner_orient,
         }
     }
+
+    pub fn edge_hamming_distance(&self, other: &Self) -> usize {
+        (0..12usize)
+            .filter(|i| self.edge_perm[*i] != other.edge_perm[*i])
+            .filter(|i| self.edge_orient[*i] != other.edge_orient[*i])
+            .count()
+    }
+
+    pub fn corner_hamming_distance(&self, other: &Self) -> usize {
+        (0..8usize)
+            .filter(|i| self.corner_perm[*i] != other.corner_perm[*i])
+            .filter(|i| self.corner_orient[*i] != other.corner_orient[*i])
+            .count()
+    }
 }
 
 impl Mul for &Rotation {
