@@ -1,3 +1,5 @@
+use rand::prelude::*;
+
 use super::Operation;
 use super::algebra::rotation::Rotation;
 
@@ -47,6 +49,21 @@ impl Cube {
         Self {
             rotation: Rotation::default(),
         }
+    }
+
+    pub fn random(steps: usize) -> (Self, Vec<Operation>) {
+        let mut rng = rand::rng();
+        let all_operations = Operation::all();
+        let operations = (0..steps)
+            .map(|_| all_operations.choose(&mut rng).unwrap().to_owned())
+            .collect::<Vec<_>>();
+
+        let mut cube = Self::new();
+        for operation in &operations {
+            cube.apply_operation(operation);
+        }
+
+        (cube, operations)
     }
 
     pub fn apply_operation(&mut self, operation: &Operation) {
